@@ -1,7 +1,8 @@
-#this is a cli fast to create .vue file and import in router
 
 
 ``` bash
+#this is a cli fast to create .vue file and import in router auto
+
 # install 
 npm install -g l-cli
 

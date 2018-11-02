@@ -1,0 +1,31 @@
+{
+  "name": "l-cli",
+  "version": "1.0.0",
+  "description": "this is a cli fast to create .vue file and import in router auto",
+  "main": "index.js",
+  "dependencies": {
+    "chalk": "^2.4.1"
+  },
+  "bin": {
+    "l-cli": "index.js"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/luoxuzhi/l-cli.git"
+  },
+  "keywords": [
+    "create",
+    ".vue",
+    "cli"
+  ],
+  "author": "luoxuzhi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/luoxuzhi/l-cli/issues"
+  },
+  "homepage": "https://github.com/luoxuzhi/l-cli#readme"
+}
