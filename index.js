@@ -5,9 +5,9 @@ const path = require('path')
 const chalk = require('chalk')
 const VERSION = require('./package.json').version
 
-function template (folder) {
+function template (filename) {
   return `<template>
-  <div class="${folder}-wrapper">${folder}</div>
+  <div class="${filename}-wrapper">${filename}</div>
 </template>
 
 <script type="text/ecmascript-6">
