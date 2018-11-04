@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 const fs = require('fs')
 const path = require('path')
 const chalk = require('chalk')
@@ -25,7 +24,6 @@ function upperFirstword (word) {
   let end = word.substring(1)
   return start + end
 }
-
 
 function write (path,data,chartset='utf-8') {
   return new Promise((resolve, reject) => {
@@ -66,33 +64,37 @@ function appendRouter (filename,comporview) {
 async function createVue () {
   let args = process.argv
   let comporview = args[2]
+  let filenames = args.slice(3)
   if (comporview === '-help') {
     console.log(chalk.green('please check terminal directory,make sure it works same with the path of package.json. second param is one of: [-v,-c,-help,-version]'))
-    console.log(chalk.green('if use mac, install version 1.0.0。if use windows, install version 1.0.1'))
     console.log(chalk.green('-c, create file in src/components,')+chalk.red('src/components must be exists first'))
     console.log(chalk.green('-v, create file in src/views,')+chalk.red('src/views must be exists first'))
     console.log(chalk.green('-version, check version'))
-    return
+    return Promise.resolve('')
   }
-  if (comporview === '-version') {
-    console.log(chalk.green(VERSION))
-    return
+  else if (comporview === '-version') {
+    return Promise.resolve(VERSION)
   }
-  let filenames = args.slice(3)
-  if (!filenames.length) {
+  else if ( (comporview === '-v' || comporview === '-c') && !filenames.length) {
     return Promise.reject('at least create one file,input filename after second param')
   }
-  filenames.forEach(async filename=>{
-    try {
-      let createPath = await mkdirDirectory(filename,comporview)
-      let dir = path.join(createPath,`${filename}.vue`)
-      let str = template(filename)
-      await write(dir,str)
-      await appendRouter(filename,comporview)
-    } catch(e) {
-      return Promise.reject(e)
-    }
-  })
+  else if ( (comporview === '-v' || comporview === '-c') && filenames.length) {
+    filenames.forEach(async filename=>{
+      try {
+        let createPath = await mkdirDirectory(filename,comporview)
+        let dir = path.join(createPath,`${filename}.vue`)
+        let str = template(filename)
+        await write(dir,str)
+        await appendRouter(filename,comporview)
+      } catch(e) {
+        return Promise.reject(e)
+      }
+    })
+    return Promise.resolve('created done!')
+  }
+  else {
+    return Promise.reject('second param is one of: [-v,-c,-help,-version]')
+  }
 }
 
-createVue().catch(e=>console.log(chalk.red(e)))
+createVue().then(e=>console.log(e)).catch(e=>console.log(chalk.red(e)))
