@@ -61,40 +61,53 @@ function appendRouter (filename,comporview) {
   })
 }
 
-async function createVue () {
+function createVue () {
   let args = process.argv
   let comporview = args[2]
   let filenames = args.slice(3)
-  if (comporview === '-help') {
-    console.log(chalk.green('please check terminal directory,make sure it works same with the path of package.json. second param is one of: [-v,-c,-help,-version]'))
-    console.log(chalk.green('-c, create file in src/components,')+chalk.red('src/components must be exists first'))
-    console.log(chalk.green('-v, create file in src/views,')+chalk.red('src/views must be exists first'))
-    console.log(chalk.green('-version, check version'))
-    return Promise.resolve('')
-  }
-  else if (comporview === '-version') {
-    return Promise.resolve(VERSION)
-  }
-  else if ( (comporview === '-v' || comporview === '-c') && !filenames.length) {
-    return Promise.reject('at least create one file,input filename after second param')
-  }
-  else if ( (comporview === '-v' || comporview === '-c') && filenames.length) {
-    filenames.forEach(async filename=>{
-      try {
-        let createPath = await mkdirDirectory(filename,comporview)
-        let dir = path.join(createPath,`${filename}.vue`)
-        let str = template(filename)
-        await write(dir,str)
-        await appendRouter(filename,comporview)
-      } catch(e) {
-        return Promise.reject(e)
-      }
-    })
-    return Promise.resolve('created done!')
-  }
-  else {
-    return Promise.reject('second param is one of: [-v,-c,-help,-version]')
-  }
+  return new Promise((resolve, reject) => {
+    if (comporview === '-help') {
+      console.log(chalk.green('please check terminal directory,make sure it works same with the path of package.json，second param is one of: [-v,-c,-help,-version]'))
+      console.log(chalk.green('-c, create file in src/components,')+chalk.red('src/components must be exists first'))
+      console.log(chalk.green('-v, create file in src/views,')+chalk.red('src/views must be exists first'))
+      console.log(chalk.green('-version, check version'))
+      resolve('')
+    }
+    else if (comporview === '-version') {
+      resolve(VERSION)
+    }
+    else if ( (comporview === '-v' || comporview === '-c') && !filenames.length) {
+      reject('at least create one file,input filename after second param')
+    }
+    else if ( (comporview === '-v' || comporview === '-c') && filenames.length) {
+      // filenames.forEach(filename=>{
+      //   try {
+      //     let createPath = await mkdirDirectory(filename,comporview)
+      //     let dir = path.join(createPath,`${filename}.vue`)
+      //     let str = template(filename)
+      //     await write(dir,str)
+      //     await appendRouter(filename,comporview)
+      //   } catch(e) {
+      //     reject(e)
+      //     // console.log(e)
+      //   }
+      // })
+      filenames.forEach(async filename =>{
+        try {
+          let createPath = await mkdirDirectory(filename,comporview)
+          let dir = path.join(createPath,`${filename}.vue`)
+          let str = template(filename)
+          await write(dir,str)
+          await appendRouter(filename,comporview)
+        } catch(e) {
+          reject(e)
+        }
+      })
+    }
+    else {
+      reject('second param should be one of them: [-v,-c,-help,-version]')
+    }
+  })
 }
 
-createVue().then(e=>console.log(e)).catch(e=>console.log(chalk.red(e)))
+createVue().then(e=>console.log(chalk.green(e))).catch(e=>console.log(chalk.red(e)))
