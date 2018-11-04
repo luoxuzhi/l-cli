@@ -7,7 +7,7 @@
 npm install -g l-cli
 
 # run
-switch terminal work path same with the path of package.json of project
+switch terminal work path same with the path of package.json of project.
 
 # check version
 l-cli -version

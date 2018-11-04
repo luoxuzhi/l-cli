@@ -88,7 +88,7 @@ function createVue () {
         } catch(e) {
           reject(e)
         }
-        resolve('create done !')
+        resolve('created done !')
       })
     }
     else {
