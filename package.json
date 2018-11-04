@@ -1,6 +1,6 @@
 {
   "name": "l-cli",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "this is a cli fast to create .vue file and import in router auto",
   "main": "index.js",
   "dependencies": {
