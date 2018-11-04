@@ -35,9 +35,7 @@ function write (path,data,chartset='utf-8') {
 
 /**
  * [mkdirDirectory description]
- * @param  {[type]} str        [description]
  * @param  {[type]} vieworbase [讲文件创建在src/components或者src/views]
- * @return {[type]}            [description]
  */
 function mkdirDirectory (filename,comporview) {
   return new Promise((resolve, reject) => {
@@ -80,18 +78,6 @@ function createVue () {
       reject('at least create one file,input filename after second param')
     }
     else if ( (comporview === '-v' || comporview === '-c') && filenames.length) {
-      // filenames.forEach(filename=>{
-      //   try {
-      //     let createPath = await mkdirDirectory(filename,comporview)
-      //     let dir = path.join(createPath,`${filename}.vue`)
-      //     let str = template(filename)
-      //     await write(dir,str)
-      //     await appendRouter(filename,comporview)
-      //   } catch(e) {
-      //     reject(e)
-      //     // console.log(e)
-      //   }
-      // })
       filenames.forEach(async filename =>{
         try {
           let createPath = await mkdirDirectory(filename,comporview)
@@ -102,6 +88,7 @@ function createVue () {
         } catch(e) {
           reject(e)
         }
+        resolve('create done !')
       })
     }
     else {
