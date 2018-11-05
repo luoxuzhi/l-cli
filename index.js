@@ -27,15 +27,13 @@ function upperFirstword (word) {
 
 function write (path,data,chartset='utf-8') {
   return new Promise((resolve, reject) => {
-    fs.writeFile(path, data, (err)=>{
-      err ? reject(err) : resolve()
-    })
+    fs.writeFile(path, data, (err)=>{ err ? reject(err) : resolve() })
   })
 }
 
 /**
  * [mkdirDirectory description]
- * @param  {[type]} vieworbase [讲文件创建在src/components或者src/views]
+ * @param  {[type]} vieworbase [将文件创建在src/components或者src/views]
  */
 function mkdirDirectory (filename,comporview) {
   return new Promise((resolve, reject) => {
