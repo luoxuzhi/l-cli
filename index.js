@@ -33,7 +33,7 @@ function write (path,data,chartset='utf-8') {
 
 /**
  * [mkdirDirectory description]
- * @param  {[type]} vieworbase [将文件创建在src/components或者src/views]
+ * @param  {[type]} vieworbase [将文件创建在src/components或src/views或src/pages]
  */
 function mkdirDirectory (filename,directory) {
   return new Promise((resolve, reject) => {
