@@ -30,3 +30,8 @@ l-cli -c test
 
 l-cli -v test
 
+
+#create test.vue file in src/pages/,the final path is src/pages/test/test.vue
+#and import in router auto like this : import Test from '@/pages/test/test'
+
+l-cli -p test
