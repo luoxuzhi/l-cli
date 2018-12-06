@@ -9,11 +9,11 @@ function template (filename) {
   <div class="${filename}-wrapper">${filename}</div>
 </template>
 
-<script type="text/ecmascript-6">
+<script>
   export default{}
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus">
 
 </style>`
 }
@@ -37,14 +37,14 @@ function write (path,data,chartset='utf-8') {
  * [mkdirDirectory description]
  * @param  {[type]} vieworbase [讲文件创建在src/components或者src/views]
  */
-function mkdirDirectory (filename,comporview) {
+function mkdirDirectory (filename,directory) {
   return new Promise((resolve, reject) => {
-    let createPath = comporview === '-c' ?  path.join(process.cwd(),'/src/components/',filename) : path.join(process.cwd(),'/src/views/',filename)
+    let createPath = directory === '-c' ?  path.join(process.cwd(),'/src/components/',filename) : directory === '-v' ? path.join(process.cwd(),'/src/views/',filename) : path.join(process.cwd(),'/src/pages/',filename)
     fs.mkdir(createPath,(err)=>{err ? reject(err) : resolve(createPath) })
   })
 }
 
-function appendRouter (filename,comporview) {
+function appendRouter (filename,directory) {
   return new Promise((resolve, reject) => {
     let routerPath = path.join(process.cwd(),'/src/router/index.js')
     let importName = ''
@@ -54,37 +54,38 @@ function appendRouter (filename,comporview) {
     }else {
       importName = upperFirstword(filename)
     }
-    let data = comporview === '-c' ? `\nimport ${importName} from '@/components/${filename}/${filename}'` : `\nimport ${importName} from '@/views/${filename}/${filename}'`
+    let data = directory === '-c' ? `\nimport ${importName} from '@/components/${filename}/${filename}'` : directory === '-v' ? `\nimport ${importName} from '@/views/${filename}/${filename}'` : `\nimport ${importName} from '@/pages/${filename}/${filename}'`
     fs.appendFile(routerPath, data, 'utf8', (err) => { err ? reject(err) : resolve() })
   })
 }
 
 function createVue () {
   let args = process.argv
-  let comporview = args[2]
+  let directory = args[2]
   let filenames = args.slice(3)
   return new Promise((resolve, reject) => {
-    if (comporview === '-help') {
-      console.log(chalk.green('please check terminal directory,make sure it works same with the path of package.json，second param is one of: [-v,-c,-help,-version]'))
+    if (directory === '-help') {
+      console.log(chalk.green('please check terminal directory,make sure it works same with the path of package.json，second param is one of: [-v,-c,-p,-help,-version]'))
       console.log(chalk.green('-c, create file in src/components,')+chalk.red('src/components must be exists first'))
       console.log(chalk.green('-v, create file in src/views,')+chalk.red('src/views must be exists first'))
+      console.log(chalk.green('-p, create file in src/views,')+chalk.red('src/pages must be exists first'))
       console.log(chalk.green('-version, check version'))
       resolve('')
     }
-    else if (comporview === '-version') {
+    else if (directory === '-version') {
       resolve(VERSION)
     }
-    else if ( (comporview === '-v' || comporview === '-c') && !filenames.length) {
+    else if ( (directory === '-v' || directory === '-c' || directory === '-p') && !filenames.length) {
       reject('at least create one file,input filename after second param')
     }
-    else if ( (comporview === '-v' || comporview === '-c') && filenames.length) {
+    else if ( (directory === '-v' || directory === '-c' || directory === '-p') && filenames.length) {
       filenames.forEach(async filename =>{
         try {
-          let createPath = await mkdirDirectory(filename,comporview)
+          let createPath = await mkdirDirectory(filename,directory)
           let dir = path.join(createPath,`${filename}.vue`)
           let str = template(filename)
           await write(dir,str)
-          await appendRouter(filename,comporview)
+          await appendRouter(filename,directory)
         } catch(e) {
           reject(e)
         }
@@ -92,7 +93,7 @@ function createVue () {
       })
     }
     else {
-      reject('second param should be one of them: [-v,-c,-help,-version]')
+      reject('second param should be one of them: [-v,-c,-p,-help,-version]')
     }
   })
 }
