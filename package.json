@@ -1,6 +1,6 @@
 {
   "name": "l-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "this is a cli fast to create .vue file and import in router auto",
   "main": "index.js",
   "dependencies": {
@@ -11,7 +11,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "echo install finished and run postinstall"
   },
   "repository": {
     "type": "git",
