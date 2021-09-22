@@ -9,7 +9,9 @@
   "bin": {
     "l-cli": "index.js"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "echo install finished and run postinstall"
@@ -28,5 +30,10 @@
   "bugs": {
     "url": "https://github.com/luoxuzhi/l-cli/issues"
   },
-  "homepage": "https://github.com/luoxuzhi/l-cli#readme"
+  "homepage": "https://github.com/luoxuzhi/l-cli#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }
